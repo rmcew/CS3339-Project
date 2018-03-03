@@ -1,8 +1,21 @@
 class Registers:
-	pc = 0
+
+	def __init__(self):
+		self.setDefault()
+
+	def setDefault(self):
+		self.programCounter = 0
+		self.instructionRegister = 0
+		self.v0 = 0
+		self.v1 = 0
+		self.v2 = 0
+		self.v3 = 0
+		self.v4 = 0
 
 	def incrementPC(self):
-		self.pc +=1
+		self.programCounter +=1
+
+
 
 def readRegister1(instruction):
 	print "test"
