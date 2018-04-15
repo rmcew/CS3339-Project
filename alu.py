@@ -30,6 +30,16 @@ class ALU:
 		reg.writeData(int(reg.readAddr1) & int(reg.readAddr2))
 		return 0
 
+	def load(self, reg, decodedIns, offset, DM):
+		dmAddress = int(int(offset)/4) + int(reg.readAddr1)
+		reg.writeData(((DM.get(dmAddress))))
+
+	def store(self, reg, decodedIns, offset, DM):
+		dmAddress = int(int(offset)/4) + int(decodedIns[2])
+
+		DM.write(dmAddress, reg.readAddr1)
+		print (DM.get(dmAddress))
+
 		
 
 

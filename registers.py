@@ -8,9 +8,9 @@ class Registers:
 		self.instructionRegister = 0
 		self.R0 = 0
 		self.R1 = 1
-		self.R2 = 0
+		self.R2 = 2
 		self.R3 = 3
-		self.R4 = 0
+		self.R4 = 4
 		self.readAddr1 = 0
 		self.readAddr2 = 0
 		self.writeAddr = 0

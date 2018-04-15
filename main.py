@@ -2,9 +2,12 @@ import registers
 import mux
 import alu
 import instructionMemory
+import dataMemory
+
 
 reg = registers.Registers()
 IM = instructionMemory.Memory()
+DM = dataMemory.Memory()
 alu = alu.ALU()
 PC = 0
 #decode.Decode("addi $1, $2, $3")
@@ -33,7 +36,7 @@ def Decode(instruction, reg):		#instruction is a MIPS instruction
 
 
 def Execute(decodedIns, reg):
-	if (decodedIns[0] in ("add", "sw", "add", "addi")):	#decodedIns[0] == opcode
+	if (decodedIns[0] in ("add")):	#decodedIns[0] == opcode
 		reg.writeAddr = decodedIns[1]
 		reg.readAddr1 = decodedIns[2]
 		reg.readAddr2 = decodedIns[3]
@@ -62,9 +65,24 @@ def Execute(decodedIns, reg):
 		print (reg.R4)
 
 	if (decodedIns[0] in "lw"):
+		reg.writeAddr = decodedIns[1]
+		temp = str(decodedIns[2]).split('(')
+		offset = temp[0]
+		decodedIns[2] = str(temp[1]).translate({ord(c): None for c in ('$', ')')})
+		reg.readAddr1 = decodedIns[2]
 
-		return 0
+		alu.load(reg, decodedIns, offset, DM)
+
 	if (decodedIns[0] in "sw"):
+		reg.readAddr1 = decodedIns[1]
+		temp = str(decodedIns[2]).split('(')
+		offset = temp[0]
+		decodedIns[2] = str(temp[1]).translate({ord(c): None for c in ('$', ')')})
+
+
+		alu.store(reg, decodedIns, offset, DM)
+
+
 		return 0
 	if (decodedIns[0] in "beq"):
 		return 0
