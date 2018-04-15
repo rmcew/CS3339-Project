@@ -4,38 +4,58 @@ class Registers:
 		self.setDefault()
 
 	def setDefault(self):
-		self.programCounter = 0
+		self.PC = 0
 		self.instructionRegister = 0
-		self.v0 = 0
-		self.v1 = 0
-		self.v2 = 0
-		self.v3 = 0
-		self.v4 = 0
+		self.R0 = 0
+		self.R1 = 1
+		self.R2 = 0
+		self.R3 = 3
+		self.R4 = 0
+		self.readAddr1 = 0
+		self.readAddr2 = 0
+		self.writeAddr = 0
 
 	def incrementPC(self):
-		self.programCounter +=1
+		self.PC +=1
+
+	def regWrite(self, rd):
+		#self.str(rd) = 0
+		test = 0
+
+	def updateRegAddr(self, rd, rs, rt):
+		self.writeAddr = rd
+		self.readAddr1 = rs
+		self.readAddr2 = rt
 
 
 
-def readRegister1(instruction):
-	print "test"
-def readRegister2(instruction):
-	print "test"
 
-def writeRegister(instruction):
-	print "test"
+	def readRegister1(instruction):
+		print ("test")
+	def readRegister2(instruction):
+		print ("test")
 
-def writeData(mux):
-	print "test"
+	def writeRegister(instruction):
+		print ("test")
 
-def readData1():
-	print "test"
+	def writeData(self, data):
 
-def readData2():
-	print "test"
+		if (self.writeAddr == "0"):
+			self.R0 = data
+		if (self.writeAddr == "1"):
+			self.R1 = data
+		if (self.writeAddr == "2"):
+			self.R2 = data
+		if (self.writeAddr == "3"):
+			self.R3 = data
+		if (self.writeAddr == "4"):
+			self.R4 = data
 
-def updatePC():
-	pc=pc+bin(4)
 
 
+	def readData1():
+		print ("test")
+
+	def readData2():
+		print ("test")
 
