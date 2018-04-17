@@ -52,10 +52,32 @@ class Registers:
 			self.R4 = data
 
 
+	def readData1(self):
 
-	def readData1():
-		print ("test")
+		if (self.readAddr1 == "0"):
+			return self.R0
+		if (self.readAddr1 == "1"):
+			return self.R1
+		if (self.readAddr1 == "2"):
+			return self.R2
+		if (self.readAddr1 == "3"):
+			return self.R3
+		if (self.readAddr1 == "4"):
+			return self.R4
+
+
+
+
 
 	def readData2():
-		print ("test")
+		if (self.readAddr2 == "0"):
+			return self.R0
+		if (self.readAddr2 == "1"):
+			return self.R1
+		if (self.readAddr2 == "2"):
+			return self.R2
+		if (self.readAddr2 == "3"):
+			return self.R3
+		if (self.readAddr2 == "4"):
+			return self.R4			
 

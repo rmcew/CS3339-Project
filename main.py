@@ -79,13 +79,16 @@ def Execute(decodedIns, reg):
 		offset = temp[0]
 		decodedIns[2] = str(temp[1]).translate({ord(c): None for c in ('$', ')')})
 
-
 		alu.store(reg, decodedIns, offset, DM)
 
 
+	if (decodedIns[0] in "j"):
 		return 0
+
 	if (decodedIns[0] in "beq"):
 		return 0
+
+						
 	if (decodedIns[0] in "or"):
 		reg.writeAddr = decodedIns[1]
 		reg.readAddr1 = decodedIns[2]

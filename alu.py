@@ -36,9 +36,11 @@ class ALU:
 
 	def store(self, reg, decodedIns, offset, DM):
 		dmAddress = int(int(offset)/4) + int(decodedIns[2])
-
 		DM.write(dmAddress, reg.readAddr1)
-		print (DM.get(dmAddress))
+
+		
+
+
 
 		
 
