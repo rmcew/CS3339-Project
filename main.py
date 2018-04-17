@@ -88,15 +88,14 @@ def Execute(decodedIns, reg):
 
 
 	if (decodedIns[0] in "j"):
-		return 0
+		reg.PC = int(decodedIns[1]) - 1
+		#return 0
 
 	if (decodedIns[0] in "beq"):
 		reg.readAddr1 = decodedIns[1]
 		reg.readAddr2 = decodedIns[2]
 		
 		alu.branch(reg, decodedIns)
-
-		#return 0
 
 						
 	if (decodedIns[0] in "or"):
