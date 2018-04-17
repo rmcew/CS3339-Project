@@ -9,15 +9,20 @@ reg = registers.Registers()
 IM = instructionMemory.Memory()
 DM = dataMemory.Memory()
 alu = alu.ALU()
-PC = 0
+currentInstruction = 0
 #decode.Decode("addi $1, $2, $3")
 
+with open('test') as f:
+	IM.memory = [line.rstrip('\n') for line in open('test')]
+	print (IM.memory)
 
 def Fetch(PC):
-	instruction = IM.getInstruction(reg.PC)
+	#currentInstruction = IM.getInstruction(reg.PC)
+
+	Decode(IM.getInstruction(reg.PC), reg)
+
 	reg.incrementPC()
 
-	return (instruction)
 
 
 def Decode(instruction, reg):		#instruction is a MIPS instruction
@@ -30,8 +35,8 @@ def Decode(instruction, reg):		#instruction is a MIPS instruction
 	for i in range(len(decodedIns))[1:]:
 		decodedIns[i] = (str(decodedIns[i]).translate({ord(c): None for c in '$'})) #strip $ and put the remaining value in rd
 
-
-	return decodedIns
+	print ("DECODEDINS: ", decodedIns)
+	Execute(decodedIns, reg) 
 
 
 
@@ -86,7 +91,12 @@ def Execute(decodedIns, reg):
 		return 0
 
 	if (decodedIns[0] in "beq"):
-		return 0
+		reg.readAddr1 = decodedIns[1]
+		reg.readAddr2 = decodedIns[2]
+		
+		alu.branch(reg, decodedIns)
+
+		#return 0
 
 						
 	if (decodedIns[0] in "or"):
@@ -114,13 +124,20 @@ def CPUState():
 	print ("R3: ", reg.R3)
 	print ("R4: ", reg.R4)
 
-for x in IM.memory: #iterate through IM
-	#Fetch()
-	currentInstruction = Fetch(PC)
-	decodedIns = Decode(currentInstruction, reg)
+while True: 
 
-	print (decodedIns)
-	Execute(decodedIns, reg)
+	try: 
+		Fetch(reg.PC) #iterate through IM
+
+	except:
+		print ("reached the end")
+		break
+	#print ("CURRENT INSTRUCTION", currentInstruction)
+	#decodedIns = Decode(currentInstruction, reg)
+
+	#print (decodedIns)
+	#Execute(decodedIns, reg)
+	print ("Current PC Value: ", reg.PC)
 
 	#Current registers
 	CPUState()

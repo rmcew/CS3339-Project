@@ -7,10 +7,10 @@ class Registers:
 		self.PC = 0
 		self.instructionRegister = 0
 		self.R0 = 0
-		self.R1 = 1
-		self.R2 = 2
-		self.R3 = 3
-		self.R4 = 4
+		self.R1 = 0
+		self.R2 = 0
+		self.R3 = 0
+		self.R4 = 0
 		self.readAddr1 = 0
 		self.readAddr2 = 0
 		self.writeAddr = 0
@@ -69,7 +69,7 @@ class Registers:
 
 
 
-	def readData2():
+	def readData2(self):
 		if (self.readAddr2 == "0"):
 			return self.R0
 		if (self.readAddr2 == "1"):

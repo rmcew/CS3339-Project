@@ -9,9 +9,9 @@ class ALU:
 	#ALU add used for lw, sw, add, addi
 	def add(self, reg, decodedIns):
 		if("addi" in decodedIns):
-			reg.writeData(int(reg.readAddr1) + int(decodedIns[3]))
+			reg.writeData(int(reg.readData1()) + int(decodedIns[3]))
 		else:
-			reg.writeData(int(reg.readAddr1) + int(reg.readAddr2))
+			reg.writeData(int(reg.readData1()) + int(reg.readData2()))
 
 	#ALU subtract used for beq, sub
 	def subtract(self, reg, decodedIns):
@@ -19,6 +19,15 @@ class ALU:
 			reg.writeData(int(reg.readAddr1) - int(decodedIns[3]))
 		else:
 			reg.writeData(int(reg.readAddr1) - int(reg.readAddr2))
+
+	def branch(self, reg, decodedIns):
+		if ("beq" in decodedIns):
+			if (int(reg.readData1()) != int(reg.readData2())):
+				print ("Should be 2: ", abs(int((int(decodedIns[3])/4))))
+				reg.PC = reg.PC - (abs(int((int(decodedIns[3])/4))) + 1)
+
+		if ("beqz" in decodedIns):
+			return 0
 
 	#ALU OR used for or
 	def OR(self, reg, decodedIns):

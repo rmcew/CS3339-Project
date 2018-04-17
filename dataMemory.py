@@ -4,7 +4,7 @@ class Memory:
 		self.setDefault()
 
 	def setDefault(self):
-		self.memory = [1, 2, 3, 4, 5, 6, 7]
+		self.memory = [0, 0, 0, 0, 0, 0, 0]
 
 	def get(self, address):
 		return self.memory[address]
