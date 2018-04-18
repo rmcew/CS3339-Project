@@ -86,6 +86,20 @@ def Execute(decodedIns, reg):
 
 		alu.store(reg, decodedIns, offset, DM)
 
+	if (decodedIns[0] in "mult"):
+		reg.writeAddr = decodedIns[1]
+		reg.readAddr1 = decodedIns[1]
+		reg.readAddr2 = decodedIns[2]
+
+		alu.mult(reg, decodedIns)
+
+	if (decodedIns[0] in "sll"):
+		reg.writeAddr = decodedIns[1]
+		reg.readAddr1 = decodedIns[2]
+
+		alu.sll(reg, decodedIns)
+		
+		return 0 
 
 	if (decodedIns[0] in "j"):
 		reg.PC = int(decodedIns[1]) - 1

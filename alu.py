@@ -29,6 +29,9 @@ class ALU:
 		if ("beqz" in decodedIns):
 			return 0
 
+	def mult(self, reg, decodedIns):
+		reg.writeData(int(reg.readData1() * int(reg.readData2())))
+
 	#ALU OR used for or
 	def OR(self, reg, decodedIns):
 		reg.writeData(int(reg.readAddr1) | int(reg.readAddr2))
@@ -47,6 +50,8 @@ class ALU:
 		dmAddress = int(int(offset)/4) + int(decodedIns[2])
 		DM.write(dmAddress, reg.readAddr1)
 
+	def sll(self, reg, decodedIns):
+		reg.writeData(int(reg.readData1()) * (int(decodedIns[3])**2))
 		
 
 
