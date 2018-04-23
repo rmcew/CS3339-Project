@@ -16,9 +16,9 @@ class ALU:
 	#ALU subtract used for beq, sub
 	def subtract(self, reg, decodedIns):
 		if ("subi" in decodedIns):
-			reg.writeData(int(reg.readAddr1) - int(decodedIns[3]))
+			reg.writeData(int(reg.readData1()) - int(decodedIns[3]))
 		else:
-			reg.writeData(int(reg.readAddr1) - int(reg.readAddr2))
+			reg.writeData(int(reg.readData1()) - int(reg.readData2()))
 
 	def branch(self, reg, decodedIns):
 		if ("beq" in decodedIns):
@@ -34,24 +34,28 @@ class ALU:
 
 	#ALU OR used for or
 	def OR(self, reg, decodedIns):
-		reg.writeData(int(reg.readAddr1) | int(reg.readAddr2))
+		reg.writeData(int(reg.readData1()) | int(reg.readData2()))
 		return 0
 
 	#ALU AND used for and
 	def AND(self, reg, decodedIns):
-		reg.writeData(int(reg.readAddr1) & int(reg.readAddr2))
+		reg.writeData(int(reg.readData1()) & int(reg.readData2()))
 		return 0
 
 	def load(self, reg, decodedIns, offset, DM):
-		dmAddress = int(int(offset)/4) + int(reg.readAddr1)
+		dmAddress = int(int(offset)/4) + int(reg.readData1())
 		reg.writeData(((DM.get(dmAddress))))
 
 	def store(self, reg, decodedIns, offset, DM):
 		dmAddress = int(int(offset)/4) + int(decodedIns[2])
-		DM.write(dmAddress, reg.readAddr1)
+		DM.write(dmAddress, reg.readData1())
 
 	def sll(self, reg, decodedIns):
-		reg.writeData(int(reg.readData1()) * (int(decodedIns[3])**2))
+		reg.writeData(int(reg.readData1()) * (int(2**int(decodedIns[3]))))
+
+	def srl(self, reg, decodedIns):
+		print (int(reg.readData1())/ int(int(2**int(decodedIns[3]))))
+		reg.writeData(int(reg.readData1())/ int(int(2**int(decodedIns[3]))))		
 		
 
 

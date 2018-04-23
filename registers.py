@@ -15,28 +15,16 @@ class Registers:
 		self.readAddr2 = 0
 		self.writeAddr = 0
 
+
 	def incrementPC(self):
 		self.PC +=1
 
-	def regWrite(self, rd):
-		#self.str(rd) = 0
-		test = 0
 
 	def updateRegAddr(self, rd, rs, rt):
 		self.writeAddr = rd
 		self.readAddr1 = rs
 		self.readAddr2 = rt
 
-
-
-
-	def readRegister1(instruction):
-		print ("test")
-	def readRegister2(instruction):
-		print ("test")
-
-	def writeRegister(instruction):
-		print ("test")
 
 	def writeData(self, data):
 
@@ -64,9 +52,6 @@ class Registers:
 			return self.R3
 		if (self.readAddr1 == "4"):
 			return self.R4
-
-
-
 
 
 	def readData2(self):

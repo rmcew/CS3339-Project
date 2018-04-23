@@ -20,7 +20,6 @@ def Fetch(PC):
 	#currentInstruction = IM.getInstruction(reg.PC)
 
 	Decode(IM.getInstruction(reg.PC), reg)
-
 	reg.incrementPC()
 
 
@@ -35,39 +34,38 @@ def Decode(instruction, reg):		#instruction is a MIPS instruction
 	for i in range(len(decodedIns))[1:]:
 		decodedIns[i] = (str(decodedIns[i]).translate({ord(c): None for c in '$'})) #strip $ and put the remaining value in rd
 
+	if (decodedIns[0] in ("add", "sub", "mult", "or", "and")):
+		reg.writeAddr = decodedIns[1]
+		reg.readAddr1 = decodedIns[2]
+		reg.readAddr2 = decodedIns[3]
+
+	if (decodedIns[0] in ("addi", "subi", "sll", "srl", "beq")):
+		reg.writeAddr = decodedIns[1]
+		reg.readAddr1 = decodedIns[2]
+
+
 	print ("DECODEDINS: ", decodedIns)
+
+	#if the instruction is just a label
+	if len(decodedIns) == 1:
+		IM.updateLabelList(decodedIns, reg)
 	Execute(decodedIns, reg) 
 
 
 
 def Execute(decodedIns, reg):
 	if (decodedIns[0] in ("add")):	#decodedIns[0] == opcode
-		reg.writeAddr = decodedIns[1]
-		reg.readAddr1 = decodedIns[2]
-		reg.readAddr2 = decodedIns[3]
-
 		alu.add(reg, decodedIns)
 
 	if (decodedIns[0] in "addi"):
-		reg.writeAddr = decodedIns[1]
-		reg.readAddr1 = decodedIns[2]
-
 		alu.add(reg, decodedIns)
 
 	if (decodedIns[0] in "sub"):
-		reg.writeAddr = decodedIns[1]
-		reg.readAddr1 = decodedIns[2]
-		reg.readAddr2 = decodedIns[3]
-
 		alu.subtract(reg, decodedIns)
 
 		print (reg.R4)
 	if (decodedIns[0] in "subi"):
-		reg.writeAddr = decodedIns[1]
-		reg.readAddr1 = decodedIns[2]
 		alu.subtract(reg, decodedIns)
-
-		print (reg.R4)
 
 	if (decodedIns[0] in "lw"):
 		reg.writeAddr = decodedIns[1]
@@ -87,48 +85,27 @@ def Execute(decodedIns, reg):
 		alu.store(reg, decodedIns, offset, DM)
 
 	if (decodedIns[0] in "mult"):
-		reg.writeAddr = decodedIns[1]
-		reg.readAddr1 = decodedIns[1]
-		reg.readAddr2 = decodedIns[2]
-
 		alu.mult(reg, decodedIns)
 
 	if (decodedIns[0] in "sll"):
-		reg.writeAddr = decodedIns[1]
-		reg.readAddr1 = decodedIns[2]
-
 		alu.sll(reg, decodedIns)
-		
-		return 0 
+
+
+	if (decodedIns[0] in "srl"):
+		alu.srl(reg, decodedIns)
 
 	if (decodedIns[0] in "j"):
 		reg.PC = int(decodedIns[1]) - 1
-		#return 0
 
-	if (decodedIns[0] in "beq"):
-		reg.readAddr1 = decodedIns[1]
-		reg.readAddr2 = decodedIns[2]
-		
+	if (decodedIns[0] in "beq"):	
 		alu.branch(reg, decodedIns)
 
 						
 	if (decodedIns[0] in "or"):
-		reg.writeAddr = decodedIns[1]
-		reg.readAddr1 = decodedIns[2]
-		reg.readAddr2 = decodedIns[3]
-
 		alu.OR(reg, decodedIns)
-		print (reg.R4)
 
 	if (decodedIns[0] in "and"):
-		reg.writeAddr = decodedIns[1]
-		reg.readAddr1 = decodedIns[2]
-		reg.readAddr2 = decodedIns[3]
-
 		alu.AND(reg, decodedIns)
-		print (reg.R4)
-
-		return 0
 
 def CPUState():
 	print ("R0: ", reg.R0)
