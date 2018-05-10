@@ -1,4 +1,4 @@
-README# MIPS Simulator in Python
+# MIPS Simulator in Python
 
 This is a MIPS simulator built in Python. The simulator executes instructions at the bit level and displays the value of the registers and data memory after each instruction. 
 
