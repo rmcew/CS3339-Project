@@ -18,12 +18,12 @@ class ALU:
 		if ("subi" in decodedIns):
 			reg.writeData(int(reg.readData1()) - int(decodedIns[3]))
 		else:
+			print (reg.readData1(), reg.readData2())
 			reg.writeData(int(reg.readData1()) - int(reg.readData2()))
 
 	def branch(self, reg, decodedIns):
 		if ("beq" in decodedIns):
-			if (int(reg.readData1()) != int(reg.readData2())):
-				print ("Should be 2: ", abs(int((int(decodedIns[3])/4))))
+			if (int(reg.readData1()) == int(reg.readData2())):
 				reg.PC = reg.PC - (abs(int((int(decodedIns[3])/4))) + 1)
 
 		if ("beqz" in decodedIns):
@@ -43,7 +43,7 @@ class ALU:
 		return 0
 
 	def load(self, reg, decodedIns, offset, DM):
-		dmAddress = int(int(offset)/4) + int(reg.readData1())
+		dmAddress = (int(int(offset)/4) + int(reg.readData1()) - 1)
 		reg.writeData(((DM.get(dmAddress))))
 
 	def store(self, reg, decodedIns, offset, DM):

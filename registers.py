@@ -11,6 +11,7 @@ class Registers:
 		self.R2 = 0
 		self.R3 = 0
 		self.R4 = 0
+		
 		self.readAddr1 = 0
 		self.readAddr2 = 0
 		self.writeAddr = 0
@@ -18,12 +19,6 @@ class Registers:
 
 	def incrementPC(self):
 		self.PC +=1
-
-
-	def updateRegAddr(self, rd, rs, rt):
-		self.writeAddr = rd
-		self.readAddr1 = rs
-		self.readAddr2 = rt
 
 
 	def writeData(self, data):

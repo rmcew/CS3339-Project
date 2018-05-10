@@ -1,5 +1,4 @@
 import registers
-import mux
 import alu
 import instructionMemory
 import dataMemory
@@ -9,62 +8,52 @@ reg = registers.Registers()
 IM = instructionMemory.Memory()
 DM = dataMemory.Memory()
 alu = alu.ALU()
-currentInstruction = 0
-#decode.Decode("addi $1, $2, $3")
+
 
 with open('test') as f:
 	IM.memory = [line.rstrip('\n') for line in open('test')]
 	print (IM.memory)
 
 def Fetch(PC):
-	#currentInstruction = IM.getInstruction(reg.PC)
-
 	Decode(IM.getInstruction(reg.PC), reg)
 	reg.incrementPC()
 
 
 
 def Decode(instruction, reg):		#instruction is a MIPS instruction
-	insType = ""
 	decodedIns = str(instruction).translate({ord(c): None for c in ','}).split() 		#translate removes the ',' from the string
 
 	
-	#decodedIns[0] is opcode
+	print ("CURRENT INSTRUCTION: ", instruction)
 	
 	for i in range(len(decodedIns))[1:]:
 		decodedIns[i] = (str(decodedIns[i]).translate({ord(c): None for c in '$'})) #strip $ and put the remaining value in rd
 
+	#Instructions that use read register 1, read register 2, and write register
 	if (decodedIns[0] in ("add", "sub", "mult", "or", "and")):
 		reg.writeAddr = decodedIns[1]
 		reg.readAddr1 = decodedIns[2]
 		reg.readAddr2 = decodedIns[3]
 
-	if (decodedIns[0] in ("addi", "subi", "sll", "srl", "beq")):
+
+	#Instructions that use write register and read register 1
+	if (decodedIns[0] in ("addi", "sll", "srl")):
 		reg.writeAddr = decodedIns[1]
 		reg.readAddr1 = decodedIns[2]
 
+	if (decodedIns[0] in ("beq")):
+		reg.readAddr1 = decodedIns[1]
+		reg.readAddr2 = decodedIns[2]
 
-	print ("DECODEDINS: ", decodedIns)
-
-	#if the instruction is just a label
-	if len(decodedIns) == 1:
-		IM.updateLabelList(decodedIns, reg)
 	Execute(decodedIns, reg) 
 
 
 
 def Execute(decodedIns, reg):
-	if (decodedIns[0] in ("add")):	#decodedIns[0] == opcode
+	if (decodedIns[0] in ("add", "addi")):	#decodedIns[0] == opcode
 		alu.add(reg, decodedIns)
 
-	if (decodedIns[0] in "addi"):
-		alu.add(reg, decodedIns)
-
-	if (decodedIns[0] in "sub"):
-		alu.subtract(reg, decodedIns)
-
-		print (reg.R4)
-	if (decodedIns[0] in "subi"):
+	if (decodedIns[0] in ("sub")):
 		alu.subtract(reg, decodedIns)
 
 	if (decodedIns[0] in "lw"):
@@ -107,12 +96,18 @@ def Execute(decodedIns, reg):
 	if (decodedIns[0] in "and"):
 		alu.AND(reg, decodedIns)
 
-def CPUState():
+def Status():
+
+	print ("PC: ", reg.PC)
 	print ("R0: ", reg.R0)
 	print ("R1: ", reg.R1)
 	print ("R2: ", reg.R2)
 	print ("R3: ", reg.R3)
 	print ("R4: ", reg.R4)
+
+	print ("Data MEM: ", DM.memory)
+
+	print ("\n")
 
 while True: 
 
@@ -120,28 +115,7 @@ while True:
 		Fetch(reg.PC) #iterate through IM
 
 	except:
-		print ("reached the end")
+		print ("END")
 		break
-	#print ("CURRENT INSTRUCTION", currentInstruction)
-	#decodedIns = Decode(currentInstruction, reg)
 
-	#print (decodedIns)
-	#Execute(decodedIns, reg)
-	print ("Current PC Value: ", reg.PC)
-
-	#Current registers
-	CPUState()
-				
-	
-
-
-
-#Fetch()
-
-
-#TODO
-#Decode needds to update registers
-#Execute
-#Jump instructions?
-#
-
+	Status()
